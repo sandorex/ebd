@@ -17,12 +17,11 @@
 package firefox
 
 import (
+	"github.com/sandorex/ebd/common"
 	"github.com/sandorex/ebd/profile"
-	"os"
-	"path"
+	"path/filepath"
 	"strconv"
 	"strings"
-	"syscall"
 )
 
 // extractPID extracts PID from string using format that Firefox lockfile uses
@@ -41,30 +40,5 @@ func extractPID(linkTarget string) (int, error) {
 // lockfile doesn't exist the profile is closed, if it does but the PID is not
 // a valid process then the profile has crashed
 func (p Profile) GetProfileState() (profile.State, error) {
-	linkTarget, err := os.Readlink(path.Join(p.path, FileLockfile))
-
-	// if it does not exist it probably isn't running
-	if os.IsNotExist(err) {
-		return profile.StateClosed, nil
-	}
-
-	// any other error is unknown state
-	if err != nil {
-		return profile.StateUnknown, err
-	}
-
-	pid, err := extractPID(linkTarget)
-	if pid == -1 || err != nil {
-		// cannot extract pid from the target, something is definitely wrong
-		return profile.StateUnknown, err
-	}
-
-	// WIP
-	process, err := os.FindProcess(pid)
-	if err != nil {
-		return profile.StateUnknown, err
-	}
-
-	err = process.Signal(syscall.Signal(0))
-	return profile.StateUnknown, err
+	return common.ReadProfileStateFromLockfile(filepath.Join(p.path, FileLockfile), extractPID)
 }

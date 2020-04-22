@@ -20,7 +20,7 @@ import (
 	"testing"
 )
 
-func TestPIDExtraction(t *testing.T) {
+func TestFFPIDExtraction(t *testing.T) {
 	tables := []struct {
 		linkTarget string
 		pid        int
@@ -32,7 +32,7 @@ func TestPIDExtraction(t *testing.T) {
 	for _, table := range tables {
 		pid, err := extractPID(table.linkTarget)
 		if pid != table.pid || err != nil {
-			t.Errorf("pid extract from %q resulted in %d instead of %d\nerror: %v", table.linkTarget, pid, table.pid, err)
+			t.Errorf("pid extracted from %q resulted in %d instead of %d\nerror: %v", table.linkTarget, pid, table.pid, err)
 		}
 	}
 }

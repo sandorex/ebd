@@ -12,21 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +build windows
+package chromium
 
-package firefox
-
-import (
-	"github.com/sandorex/ebd/common"
-	"github.com/sandorex/ebd/profile"
-	"path/filepath"
+const (
+	FilePreferences       = "Preferences"
+	FileHistoryDatabase   = "History"
+	FileLoginData         = "Login Data"
+	FileWebData           = "Web Data"
+	FileCookiesDatabase   = "Cookies"
+	FileSecurePreferences = "Secure Preferences"
+	FileBookmarks         = "Bookmarks"
 )
-
-// GetProfileState reads profile state by checking if the lockfile is open in
-// another process, if it is then the profile is running, if it isn't then it's
-// closed
-//
-// NOTE: THE LOCKFILE IS NOT DELETED WHEN FIREFOX CLOSES
-func (p Profile) GetProfileState() (profile.State, error) {
-	return common.ReadProfileStateFromLockfile(filepath.Join(p.path, FileLockfile))
-}

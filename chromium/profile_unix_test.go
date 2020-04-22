@@ -12,21 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +build windows
+// +build !windows
 
-package firefox
+package chromium
 
 import (
-	"github.com/sandorex/ebd/common"
-	"github.com/sandorex/ebd/profile"
-	"path/filepath"
+	"testing"
 )
 
-// GetProfileState reads profile state by checking if the lockfile is open in
-// another process, if it is then the profile is running, if it isn't then it's
-// closed
-//
-// NOTE: THE LOCKFILE IS NOT DELETED WHEN FIREFOX CLOSES
-func (p Profile) GetProfileState() (profile.State, error) {
-	return common.ReadProfileStateFromLockfile(filepath.Join(p.path, FileLockfile))
+func TestChPIDExtraction(t *testing.T) {
+	tables := []struct {
+		linkTarget string
+		pid        int
+	}{
+		{"something-1234", 1234},
+		{"abacadabra-9999", 9999},
+	}
+
+	for _, table := range tables {
+		pid, err := extractPID(table.linkTarget)
+		if pid != table.pid || err != nil {
+			t.Errorf("pid extracted from %q resulted in %d instead of %d\nerror: %v", table.linkTarget, pid, table.pid, err)
+		}
+	}
 }

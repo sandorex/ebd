@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package firefox contains code specific to Firefox browser
-package firefox
+// Package chromium contains code specific to Chromium browser
+package chromium
 
 import (
 	"github.com/sandorex/ebd/profile"
@@ -21,30 +21,22 @@ import (
 	"path/filepath"
 )
 
-// Profile represents Firefox browser profile
+// Profile represents Chromium browser profile
 //
 // NOTE: it's not recommended to initialize the struct directly, use the
 // NewProfile function
 type Profile struct {
 	name, path string
-
-	// is the profile default (Firefox only)
-	_default bool
 }
 
 // NewProfile creates an instance of Profile but does not check if the profile
 // points to a valid profile, run IsProfileValid to check
 //
 // NOTE: the name argument is optional
-func NewProfile(path string, name string, _default bool) Profile {
-	if name == "" {
-		name = "unnamed"
-	}
-
+func NewProfile(path string) Profile {
 	return Profile{
-		path:     path,
-		name:     name,
-		_default: _default,
+		path: path,
+		name: filepath.Base(path),
 	}
 }
 
@@ -64,9 +56,13 @@ func (p Profile) GetProfilePath() string {
 func (p Profile) IsProfileValid() bool {
 	// check if each file that always exists in a profile exist
 	for _, file := range []string{
-		FilePlacesDatabase,
+		FilePreferences,
+		FileHistoryDatabase,
+		FileLoginData,
+		FileWebData,
 		FileCookiesDatabase,
-		FileExtensions,
+		FileSecurePreferences,
+		FileBookmarks,
 	} {
 		if _, err := os.Stat(filepath.Join(p.path, file)); os.IsNotExist(err) {
 			return false

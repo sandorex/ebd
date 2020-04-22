@@ -12,21 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +build windows
+// +build !windows
 
-package firefox
+package chromium
 
 import (
 	"github.com/sandorex/ebd/common"
 	"github.com/sandorex/ebd/profile"
 	"path/filepath"
+	"strconv"
+	"strings"
 )
 
-// GetProfileState reads profile state by checking if the lockfile is open in
-// another process, if it is then the profile is running, if it isn't then it's
-// closed
-//
-// NOTE: THE LOCKFILE IS NOT DELETED WHEN FIREFOX CLOSES
+// extractPID extracts PID from string using format that Chromium lockfile uses
+// 'HOSTNAME-PID'
+func extractPID(linkTarget string) (int, error) {
+	index := strings.LastIndex(linkTarget, "-")
+	if index == -1 {
+		// '-' has not been found
+		return -1, nil
+	}
+
+	return strconv.Atoi(linkTarget[index+1:])
+}
+
+// GetProfileState reads profile state by reading the lockfile link if the
+// lockfile doesn't exist the profile is closed, if it does but the PID is not
+// a valid process then the profile has crashed
 func (p Profile) GetProfileState() (profile.State, error) {
-	return common.ReadProfileStateFromLockfile(filepath.Join(p.path, FileLockfile))
+	return common.ReadProfileStateFromLockfile(filepath.Join(filepath.Dir(p.path), FileLockfile), extractPID)
 }

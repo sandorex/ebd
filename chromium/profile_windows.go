@@ -14,7 +14,7 @@
 
 // +build windows
 
-package firefox
+package chromium
 
 import (
 	"github.com/sandorex/ebd/common"
@@ -22,11 +22,6 @@ import (
 	"path/filepath"
 )
 
-// GetProfileState reads profile state by checking if the lockfile is open in
-// another process, if it is then the profile is running, if it isn't then it's
-// closed
-//
-// NOTE: THE LOCKFILE IS NOT DELETED WHEN FIREFOX CLOSES
 func (p Profile) GetProfileState() (profile.State, error) {
-	return common.ReadProfileStateFromLockfile(filepath.Join(p.path, FileLockfile))
+	return common.ReadProfileStateFromLockfile(filepath.Join(filepath.Dir(p.path), FileLockfile))
 }
