@@ -28,8 +28,6 @@ The library provides easy reading and writing of browser data, currently support
 
 4. Chromium encrypts the cookies, so this may be a pain
 
-**NOTE:** There is more accessible data but some of it is browser-specific
-
 This library is base of [`cbsync`](https://github.com/sandorex/cbsync.git)
 
 ## ebdutil
