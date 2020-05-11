@@ -5,12 +5,28 @@
 
 > **WARNING** The library is very early in development
 
-The library provides easy reading and writing of browser data such as
+The library provides easy reading and writing of browser data, currently supported features are
 
-- Cookies
-- Bookmarks
-- History
-- Sessions
+| Browser        | State Detection [(1)]() | Bookmarks | Cookies      | History | Extension List [(2)]() | Account Info [(3)]() |
+| -------------- | ----------------------- | --------- | ------------ | ------- | ---------------------- | -------------------- |
+| Chromium-based | Done                    | TODO      | TODO [(4)]() | TODO    | TODO                   | TODO                 |
+| Firefox-based  | Done                    | TODO      | TODO         | TODO    | TODO                   | TODO                 |
+
+1. There are 3 states
+   - Closed - the browser is not using it anymore
+   - Running - the browser is using it currently
+   - Unknown - the browser has crashed or the profile is corrupted
+
+2. Returns list of extensions installed, with their info like
+   - ID
+   - Version
+   - Author
+   - Description
+   - Link to extension page where it can be installed
+
+3. Account information like email of the account *(can be used to check if there is an account signed in)*
+
+4. Chromium encrypts the cookies, so this may be a pain
 
 **NOTE:** There is more accessible data but some of it is browser-specific
 
