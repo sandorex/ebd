@@ -18,6 +18,7 @@ package firefox
 
 import (
 	"github.com/sandorex/ebd/common"
+	"github.com/sandorex/ebd/firefox/files"
 	"github.com/sandorex/ebd/profile"
 	"path/filepath"
 	"strconv"
@@ -40,5 +41,5 @@ func extractPID(linkTarget string) (int, error) {
 // lockfile doesn't exist the profile is closed, if it does but the PID is not
 // a valid process then the profile has crashed
 func (p Profile) GetProfileState() (profile.State, error) {
-	return common.ReadProfileStateFromLockfile(filepath.Join(p.path, FileLockfile), extractPID)
+	return common.ReadProfileStateFromLockfile(filepath.Join(p.path, files.FileLockfile), extractPID)
 }

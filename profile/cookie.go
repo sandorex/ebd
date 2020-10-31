@@ -12,9 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +build windows
+package profile
 
-package firefox
+import (
+	"time"
+)
 
-// FileLockfile is the name of the lockfile for Firefox browser
-const FileLockfile = "parent.lock"
+type Cookie interface {
+	GetBaseDomain() string
+	GetName() string
+	GetPath() string
+	GetValue() string
+	GetDateExpiry() time.Time
+	GetDateAdded() time.Time
+	GetDateLastAccessed() time.Time
+	IsExpired() bool
+}

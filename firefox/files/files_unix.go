@@ -14,7 +14,7 @@
 
 // +build !windows
 
-package firefox
+package files
 
 // FileLockfile is the name of lockfile for Firefox browser
 const FileLockfile = "lock"

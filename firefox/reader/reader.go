@@ -12,22 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +build windows
-
-package firefox
+package reader
 
 import (
-	"github.com/sandorex/ebd/common"
+	"github.com/sandorex/ebd/firefox"
 	"github.com/sandorex/ebd/firefox/files"
-	"github.com/sandorex/ebd/profile"
+	"io/ioutil"
+	"os"
 	"path/filepath"
 )
 
-// GetProfileState reads profile state by checking if the lockfile is open in
-// another process, if it is then the profile is running, if it isn't then it's
-// closed
-//
-// NOTE: THE LOCKFILE IS NOT DELETED WHEN FIREFOX CLOSES
-func (p Profile) GetProfileState() (profile.State, error) {
-	return common.ReadProfileStateFromLockfile(filepath.Join(p.path, files.FileLockfile))
+type Reader struct {
+	profile *firefox.Profile
+}
+
+func (r Reader) ReadContainers() (map[int]Container, error) {
+	file, err := os.Open(filepath.Join(r.profile.GetProfilePath(), files.FileContainers))
+	if err != nil {
+		return nil, err
+	}
+
+	defer file.Close()
+
+	bytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+
+	return ParseContainers(bytes)
 }

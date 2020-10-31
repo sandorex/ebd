@@ -1,0 +1,45 @@
+{
+   "version": 4,
+   "lastUserContextId": 6,
+   "identities": [
+      {
+         "userContextId": 1,
+         "public": true,
+         "icon": "fingerprint",
+         "color": "purple",
+         "telemetryId": 1,
+         "name": "1"
+      },
+      {
+         "userContextId": 3,
+         "public": true,
+         "icon": "circle",
+         "color": "green",
+         "telemetryId": 3,
+         "name": "3"
+      },
+      {
+         "userContextId": 5,
+         "public": false,
+         "icon": "",
+         "color": "",
+         "name": "userContextIdInternal.thumbnail",
+         "accessKey": ""
+      },
+      {
+         "userContextId": 4294967295,
+         "public": false,
+         "icon": "",
+         "color": "",
+         "name": "userContextIdInternal.webextStorageLocal",
+         "accessKey": ""
+      },
+      {
+         "userContextId": 6,
+         "public": true,
+         "icon": "fence",
+         "color": "toolbar",
+         "name": "6"
+      }
+   ]
+}

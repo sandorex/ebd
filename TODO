@@ -1,0 +1,1 @@
+add -no-host-grab to xephyr when testing

@@ -12,22 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +build windows
-
-package firefox
+package common
 
 import (
-	"github.com/sandorex/ebd/common"
-	"github.com/sandorex/ebd/firefox/files"
-	"github.com/sandorex/ebd/profile"
-	"path/filepath"
+	"encoding/json"
+	"github.com/sandorex/ebd/errors"
+	"time"
 )
 
-// GetProfileState reads profile state by checking if the lockfile is open in
-// another process, if it is then the profile is running, if it isn't then it's
-// closed
-//
-// NOTE: THE LOCKFILE IS NOT DELETED WHEN FIREFOX CLOSES
-func (p Profile) GetProfileState() (profile.State, error) {
-	return common.ReadProfileStateFromLockfile(filepath.Join(p.path, files.FileLockfile))
+// ReadVersionFromJSON reads version field from JSON
+func ReadVersionFromJSON(key string, data map[string]*json.RawMessage) (int, error) {
+	versionFieldRaw, ok := data[key]
+	if !ok {
+		return 0, errors.ErrJSONMissingKeys([]string{key})
+	}
+
+	var versionInt int
+	err := json.Unmarshal(*versionFieldRaw, &versionInt)
+	if err != nil {
+		return 0, err
+	}
+
+	return versionInt, nil
+}
+
+// UnixMillis converts milliseconds from epoch to Time
+func UnixMillis(epoch int64) time.Time {
+	return time.Unix(0, epoch/1000000)
 }

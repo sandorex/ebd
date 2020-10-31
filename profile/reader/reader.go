@@ -12,22 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +build windows
+package reader
 
-package firefox
+type Reader interface {
+	// cache is whether or not the reader will cache the data or read it when
+	// asked for it
+	Open(cache bool)
+	Close()
 
-import (
-	"github.com/sandorex/ebd/common"
-	"github.com/sandorex/ebd/firefox/files"
-	"github.com/sandorex/ebd/profile"
-	"path/filepath"
-)
-
-// GetProfileState reads profile state by checking if the lockfile is open in
-// another process, if it is then the profile is running, if it isn't then it's
-// closed
-//
-// NOTE: THE LOCKFILE IS NOT DELETED WHEN FIREFOX CLOSES
-func (p Profile) GetProfileState() (profile.State, error) {
-	return common.ReadProfileStateFromLockfile(filepath.Join(p.path, files.FileLockfile))
+	ReadExtensions()
+	ReadHistory()
+	ReadBookmarks()
+	ReadCookies()
 }

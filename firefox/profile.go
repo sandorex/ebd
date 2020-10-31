@@ -16,6 +16,7 @@
 package firefox
 
 import (
+	"github.com/sandorex/ebd/firefox/files"
 	"github.com/sandorex/ebd/profile"
 	"os"
 	"path/filepath"
@@ -64,9 +65,9 @@ func (p Profile) GetProfilePath() string {
 func (p Profile) IsProfileValid() bool {
 	// check if each file that always exists in a profile exist
 	for _, file := range []string{
-		FilePlacesDatabase,
-		FileCookiesDatabase,
-		FileExtensions,
+		files.FilePlacesDatabase,
+		files.FileCookiesDatabase,
+		files.FileExtensions,
 	} {
 		if _, err := os.Stat(filepath.Join(p.path, file)); os.IsNotExist(err) {
 			return false
